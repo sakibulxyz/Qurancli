@@ -15,16 +15,16 @@ open_surah() {
 
 # dmenu
 __dmenu() {
-	if [ ! -z "$term" ]
+	if [ -n "$term" ]
 	then
 
-		surah="$([ -z "$1" ] && ls "${cName}" | dmenu -p "Surah : " -l 8)"
+		surah="$(ls "${cName}" | dmenu -p "Surah : " -l 8)"
 		$term -e less -C "${cName}/${surah}"
 	
-	elif [ -e "$terml" ]
+	elif [ -e "$termL" ]
 	then
-		term="$(cat "$terml")"
-		surah="$([ -z "$1" ] && ls "${cName}" | dmenu -p "Surah : " -l 8)"
+		term="$(cat "$termL")"
+		surah="$(ls "${cName}" | dmenu -p "Surah : " -l 8)"
 		$term -e less -C "${cName}/${surah}"
 
 	elif [ -z "$term" ] && [ ! -e "$terml" ]
