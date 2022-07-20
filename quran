@@ -18,14 +18,14 @@ __dmenu() {
 	if [ ! -z "$term" ]
 	then
 
-		surah="$([ -z "$1" ] && printf "" | dmenu -p "Which surah do you wanna read?:(give the surah no) ")"
-		$term -e open_surah $surah
+		surah="$([ -z "$1" ] && ls "${cName}" | dmenu -p "Surah : " -l 8)"
+		$term -e less "${cName}/${surah}"
 	
 	elif [ -e "$terml" ]
 	then
 		term="$(cat "$terml")"
-		surah="$([ -z "$1" ] && printf "" | dmenu -p "Which surah do you wanna read?:(give the surah no) ")"
-		$term -e open_surah $surah
+		surah="$([ -z "$1" ] && ls "${cName}" | dmenu -p "Surah : " -l 8)"
+		$term -e less "${cName}/${surah}"
 
 	elif [ -z "$term" ] && [ ! -e "$terml" ]
 	then
@@ -39,6 +39,8 @@ __dmenu() {
 # fzf search
 __fzf() {
 	[ -z "$1" ] && fzfName="$( ls "$cName" | fzf )" || fzfName="$( ls "$cName" | fzf -q "$*" )"
+	less "${cName}/${fzfName}"
+
 }
 
 # [ "$1" = "d" ] && __dmenu "$2" && exit
