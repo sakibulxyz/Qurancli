@@ -43,12 +43,31 @@ __fzf() {
 
 }
 
+usage () {
+	printf "%s" \
+"Usage: quran [OPTIONS...] [surah no] <search-query>
+    OPTIONS:
+        -h | --help         Show this help text
+        -d | --dmenu        open in dmwnu
+        --version           Get the current version
+    example:
+         $ quran 1           it will open Surah Fatiha [ if oney number is given from 1-114 ]
+         $ quran fatiha      it will open fzf and you can select the surah
+         $ quran -d          it will open dmenu
+"
+}
+
+
 # [ "$1" = "d" ] && __dmenu "$2" && exit
 # [ -z "$1" ] && [ "$1" != "d" ] && printf "Which surah do you wanna read?:(give the surah no) " && read -r surah
 
 case ${args#[-+]} in
 *[!0-9]* | '')
-	if [ "$args" = "--dm" ]
+	if [ "$args" = "-h" ] ||  [ "$args" = "--help" ]
+	then
+		usage
+
+	elif [ "$args" = "-d" ]
 	then
 		__dmenu
 	else
