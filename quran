@@ -1,11 +1,13 @@
 #! /bin/sh
 mLink="${HOME}/.config/quran"
 cq="${mLink}/Dr-Mustafa-Khattab_the-Clear-Quran"
+cName="${cq}/name"
 termL="${mLink}/term"
 term="$TERMINAL"
 
-# num='^[0-9]+$'
-# [[ "$num" =~ "$1" ]] && echo wow && exit
+args="$*"
+
+[ -z "$args" ] && printf "Which surah do you wanna read?: " && read -r args
 
 open_surah() {
 	less "$cq/$1-no-surah.txt"
@@ -34,6 +36,27 @@ __dmenu() {
 	fi
 }
 
-[ "$1" = "d" ] && __dmenu "$2" && exit
-[ -z "$1" ] && [ "$1" != "d" ] && printf "Which surah do you wanna read?:(give the surah no) " && read -r surah
-open_surah $surah
+# fzf search
+__fzf() {
+	[ -z "$1" ] && fzfName="$( ls "$cName" | fzf )" || fzfName="$( ls "$cName" | fzf -q "$*" )"
+}
+
+# [ "$1" = "d" ] && __dmenu "$2" && exit
+# [ -z "$1" ] && [ "$1" != "d" ] && printf "Which surah do you wanna read?:(give the surah no) " && read -r surah
+
+case ${args#[-+]} in
+*[!0-9]* | '')
+	if [ "$args" = "d" ]
+	then
+		__dmenu
+	else
+		__fzf "$args"
+	fi
+	;;
+
+* )
+	[ "$args" -le "114" ] && open_surah "$args" || echo "give a valid surah no"
+	;;
+
+esac
+
