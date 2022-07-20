@@ -1,0 +1,31 @@
+#! /bin/sh
+mLink="${HOME}/.config/quran"
+cq="${mLink}/Dr-Mustafa-Khattab_the-Clear-Quran"
+termL="${mLink}/term"
+term="$TERMINAL"
+
+open_surah() {
+	less "$cq/$1-no-surah.txt"
+}
+
+# dmenu
+_dmenu() {
+	if [ ! -z "$term" ]
+	then
+		$term open_surah
+	
+	elif [ -e "$terml" ]
+	then
+		term="$(cat "$terml")"
+		$term open_surah
+
+	elif [ -z "$term" ] && [ ! -e "$terml" ]
+	then
+		ter="$(printf "" | dmenu -p "Whats your termnal emulators name?: ")"
+		echo "$ter" > "$termL"
+	else
+		term="$TERMINAL"	
+	fi
+}
+
+[ "$1" = "d" ] && _dmenu "$2" || open_surah $1
