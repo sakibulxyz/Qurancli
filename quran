@@ -4,28 +4,36 @@ cq="${mLink}/Dr-Mustafa-Khattab_the-Clear-Quran"
 termL="${mLink}/term"
 term="$TERMINAL"
 
+# num='^[0-9]+$'
+# [[ "$num" =~ "$1" ]] && echo wow && exit
+
 open_surah() {
 	less "$cq/$1-no-surah.txt"
 }
 
 # dmenu
-_dmenu() {
+__dmenu() {
 	if [ ! -z "$term" ]
 	then
-		$term open_surah
+
+		surah="$([ -z "$1" ] && printf "" | dmenu -p "Which surah do you wanna read?:(give the surah no) ")"
+		$term -e open_surah $surah
 	
 	elif [ -e "$terml" ]
 	then
 		term="$(cat "$terml")"
-		$term open_surah
+		surah="$([ -z "$1" ] && printf "" | dmenu -p "Which surah do you wanna read?:(give the surah no) ")"
+		$term -e open_surah $surah
 
 	elif [ -z "$term" ] && [ ! -e "$terml" ]
 	then
-		ter="$(printf "" | dmenu -p "Whats your termnal emulators name?: ")"
+		ter="$(printf "" | dmenu -p "Whats your termnal emulators name?:(give the surah no) ")"
 		echo "$ter" > "$termL"
 	else
 		term="$TERMINAL"	
 	fi
 }
 
-[ "$1" = "d" ] && _dmenu "$2" || open_surah $1
+[ "$1" = "d" ] && __dmenu "$2" && exit
+[ -z "$1" ] && [ "$1" != "d" ] && printf "Which surah do you wanna read?:(give the surah no) " && read -r surah
+open_surah $surah
