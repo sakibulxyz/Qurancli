@@ -48,7 +48,7 @@ __fzf() {
 
 case ${args#[-+]} in
 *[!0-9]* | '')
-	if [ "$args" = "d" ]
+	if [ "$args" = "--dm" ]
 	then
 		__dmenu
 	else
