@@ -10,7 +10,7 @@ args="$*"
 [ -z "$args" ] && printf "Which surah do you wanna read?: " && read -r args
 
 open_surah() {
-	less "$cq/$1-no-surah.txt"
+	less -C "$cq/$1-no-surah.txt"
 }
 
 # dmenu
@@ -19,13 +19,13 @@ __dmenu() {
 	then
 
 		surah="$([ -z "$1" ] && ls "${cName}" | dmenu -p "Surah : " -l 8)"
-		$term -e less "${cName}/${surah}"
+		$term -e less -C "${cName}/${surah}"
 	
 	elif [ -e "$terml" ]
 	then
 		term="$(cat "$terml")"
 		surah="$([ -z "$1" ] && ls "${cName}" | dmenu -p "Surah : " -l 8)"
-		$term -e less "${cName}/${surah}"
+		$term -e less -C "${cName}/${surah}"
 
 	elif [ -z "$term" ] && [ ! -e "$terml" ]
 	then
@@ -39,7 +39,7 @@ __dmenu() {
 # fzf search
 __fzf() {
 	[ -z "$1" ] && fzfName="$( ls "$cName" | fzf )" || fzfName="$( ls "$cName" | fzf -q "$*" )"
-	less "${cName}/${fzfName}"
+	less -C "${cName}/${fzfName}"
 
 }
 
