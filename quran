@@ -38,9 +38,16 @@ __dmenu() {
 
 # fzf search
 __fzf() {
-	[ -z "$1" ] && fzfName="$( ls "$cName" | fzf )" || fzfName="$( ls "$cName" | fzf -q "$*" )"
-	less -C "${cName}/${fzfName}"
+	if [ -z "$1" ]
+	then
+		fzfName="$( ls "$cName" | fzf )" 
+		[ -z "$fzfName" ] && exit
+	else
+		fzfName="$( ls "$cName" | fzf -q "$*" )"
+		[ -z "$fzfName" ] && exit
+	fi
 
+	less -C "${cName}/${fzfName}"
 }
 
 usage () {
@@ -70,13 +77,17 @@ case ${args#[-+]} in
 	elif [ "$args" = "-d" ]
 	then
 		__dmenu
+
+	elif [ "$args" = "-f" ]
+	then
+		__fzf
 	else
 		__fzf "$args"
 	fi
 	;;
 
 * )
-	[ "$args" -le "114" ] && open_surah "$args" || echo "give a valid surah no"
+	[ "$args" -le "114" ] && open_surah "$args" || echo "give a valid surah number or name"
 	;;
 
 esac
