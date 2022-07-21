@@ -28,10 +28,10 @@ install() {
 	then
 		sudo cp ./quran /usr/bin/quran
 		sudo chmod +x /usr/bin/quran
-		echo "installtion compleate! Enjoy!"
+		echo "installtion compleate! May allah bless you. Enojoy!"
 		exit 0
 	else
-		cp ./quran "$HOME/.local/bin/quran" && echo "installtion compleate! Enjoy!" && exit 0
+		cp ./quran "$HOME/.local/bin/quran" && echo "Copied at $HOME/.local/bin/quran. May allah bless you. Enojoy!" && exit 0
 		echo "no such file at $HOME/.local/bin/."
 	fi
 }
