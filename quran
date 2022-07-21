@@ -9,6 +9,11 @@ args="$*"
 
 [ -z "$args" ] && printf "Which surah do you wanna read?: " && read -r args
 
+version() {
+	VERSION="0.7"
+	echo "version $VERSION"
+}
+
 open_surah() {
 	less -C "$cq/$1-no-surah.txt"
 }
@@ -55,7 +60,9 @@ usage () {
 "Usage: quran [OPTIONS...] [surah no] <search-query>
     OPTIONS:
         -h | --help         Show this help text
-        -d | --dmenu        open in dmwnu
+        -h | --help         Show this help text
+        -d | --dmenu        open in dmenu
+        -f | --find         directily search with fzf (find a surah)
         --version           Get the current version
     example:
          $ quran 1           it will open Surah Fatiha [ if oney number is given from 1-114 ]
@@ -65,8 +72,6 @@ usage () {
 }
 
 
-# [ "$1" = "d" ] && __dmenu "$2" && exit
-# [ -z "$1" ] && [ "$1" != "d" ] && printf "Which surah do you wanna read?:(give the surah no) " && read -r surah
 
 case ${args#[-+]} in
 *[!0-9]* | '')
@@ -74,11 +79,15 @@ case ${args#[-+]} in
 	then
 		usage
 
+	elif [ "$args" = "--version" ]
+	then
+		version
+
 	elif [ "$args" = "-d" ]
 	then
 		__dmenu
 
-	elif [ "$args" = "-f" ]
+	elif [ "$args" = "-f" ] || [ "$args" = "--find" ]
 	then
 		__fzf
 	else
