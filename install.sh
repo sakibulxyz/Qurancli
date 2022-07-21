@@ -47,6 +47,9 @@ if [ "$1" = "-f" ] ; then
 	echo force
 	rm -rf "$mPath"
 	install $2
+	exit 0
 else
 	[ -e "$mPath" ] && echo "it's already installed" && exit 0
+	install $1
 fi
+
